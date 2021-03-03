@@ -32,6 +32,14 @@ ol, ul {
   width: 34px;
 }
 
+.board-row:nth-child(even) .square:nth-child(odd) {
+  background-color: green;
+}
+
+.board-row:nth-child(odd) .square:nth-child(even) {
+  background-color: green;
+}
+
 .square:focus {
   outline: none;
 }
