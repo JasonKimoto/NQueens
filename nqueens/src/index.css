@@ -17,6 +17,11 @@ ol, ul {
   margin-bottom: 10px;
 }
 
+.queen {
+  width: 95px;
+  height: 95px;
+}
+
 .square {
   background: #fff;
   border: 1px solid #999;
@@ -24,12 +29,12 @@ ol, ul {
   font-size: 24px;
   font-weight: bold;
   line-height: 34px;
-  height: 34px;
+  height: 100px;
   margin-right: -1px;
   margin-top: -1px;
   padding: 0;
   text-align: center;
-  width: 34px;
+  width: 100px;
 }
 
 .board-row:nth-child(even) .square:nth-child(odd) {
