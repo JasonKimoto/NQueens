@@ -34,25 +34,25 @@ class Board extends React.Component {
       />
     );
   }
-
+  boardCreate(){
+    let board = [];
+    let boardSize = this.props.size;
+    // Outer loop to create parent
+    for (let i = 0; i < boardSize; i++) {
+      let children = []
+      //Inner loop to create children
+      for (let j = 0; j < boardSize; j++) {
+        children.push(this.renderSquare(j+i*boardSize))
+      }
+      //Create the parent and add the children
+      board.push(<div className="board-row">{children}</div>)
+    }
+    return board;
+  }
   render() {
     return (
       <div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
+        {this.boardCreate()}
       </div>
     );
   }
@@ -64,7 +64,7 @@ class Game extends React.Component {
     this.state = {
       history: [
         {
-          squares: Array(9).fill(null)
+          squares: Array(this.props.size*this.props.size).fill(null)
         }
       ],
       stepNumber: 0,
@@ -118,7 +118,7 @@ class Game extends React.Component {
     if (winner) {
       status = "Winner: " + winner;
     } else {
-      status = "Next player: " + (this.state.xIsNext ? "X" : "O");
+      status = "Next player: " + (this.state.xIsNext ? "White" : "Black");
     }
 
     return (
@@ -127,6 +127,7 @@ class Game extends React.Component {
           <Board
             squares={current.squares}
             onClick={i => this.handleClick(i)}
+            size={this.props.size}
           />
         </div>
         <div className="game-info">
@@ -140,9 +141,10 @@ class Game extends React.Component {
 
 // ========================================
 
-ReactDOM.render(<Game />, document.getElementById("root"));
+ReactDOM.render(<Game size={8}/>, document.getElementById("root"));
 
 function calculateWinner(squares) {
+  /*
   const lines = [
     [0, 1, 2],
     [3, 4, 5],
@@ -159,5 +161,6 @@ function calculateWinner(squares) {
       return squares[a];
     }
   }
+  */
   return null;
 }
