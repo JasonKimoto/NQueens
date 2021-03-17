@@ -5,13 +5,13 @@ import bq from './BQ.png'
 import wq from './WQ.png'
 
 function Square(props) {
-  if (props.value == null) {
+  if (props.value == false) {
     return (
       <button className="square" onClick={props.onClick}>
       </button>
     );
   }
-  if (props.value == "X") {
+  if (props.value == true && props.color > 0) {
     return (
       <button className="square" onClick={props.onClick}>
         <img className="queen" src={wq}/>
@@ -26,23 +26,31 @@ function Square(props) {
 }
 
 class Board extends React.Component {
-  renderSquare(i) {
+  renderSquare(i, val) {
     return (
       <Square
-        value={this.props.squares[i]}
+        value={val}
+        color={this.props.squares[Math.ceil(i/this.props.size)-1]}
         onClick={() => this.props.onClick(i)}
       />
     );
   }
   boardCreate(){
+    console.log(this.props.squares);
     let board = [];
     let boardSize = this.props.size;
     // Outer loop to create parent
-    for (let i = 0; i < boardSize; i++) {
+    for (let i = 1; i <= boardSize; i++) {
       let children = []
       //Inner loop to create children
-      for (let j = 0; j < boardSize; j++) {
-        children.push(this.renderSquare(j+i*boardSize))
+      for (let j = 1; j <= boardSize; j++) {
+        if (Math.abs(this.props.squares[i-1]) == j) {
+
+          children.push(this.renderSquare((j)+(i-1)*boardSize, true))
+        }
+        else {
+          children.push(this.renderSquare((j)+(i-1)*boardSize, false))
+        }
       }
       //Create the parent and add the children
       board.push(<div className="board-row">{children}</div>)
@@ -64,7 +72,7 @@ class Game extends React.Component {
     this.state = {
       history: [
         {
-          squares: Array(this.props.size*this.props.size).fill(null)
+          squares: Array(this.props.size).fill(0)
         }
       ],
       stepNumber: 0,
@@ -73,13 +81,15 @@ class Game extends React.Component {
   }
 
   handleClick(i) {
+    const row = Math.ceil(i/this.props.size)-1;
+    const colm = i%this.props.size==0 ? this.props.size : i%this.props.size;
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
-    if (calculateWinner(squares) || squares[i]) {
+    if (calculateWinner(squares) || squares[row]) {
       return;
     }
-    squares[i] = this.state.xIsNext ? "X" : "O";
+    squares[row] = this.state.xIsNext ? colm : -1*colm;
     this.setState({
       history: history.concat([
         {
@@ -141,7 +151,7 @@ class Game extends React.Component {
 
 // ========================================
 
-ReactDOM.render(<Game size={8}/>, document.getElementById("root"));
+ReactDOM.render(<Game size={5}/>, document.getElementById("root"));
 
 function calculateWinner(squares) {
   /*
