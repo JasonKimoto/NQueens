@@ -86,7 +86,7 @@ class Game extends React.Component {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
-    if (calculateWinner(squares) || squares[row]) {
+    if (calculateWinner(squares) || squares[row] || !(validMove(squares,row,colm))) {
       return;
     }
     squares[row] = this.state.xIsNext ? colm : -1*colm;
@@ -150,8 +150,8 @@ class Game extends React.Component {
 }
 
 // ========================================
-
-ReactDOM.render(<Game size={5}/>, document.getElementById("root"));
+const boardSize = 5
+ReactDOM.render(<Game size={boardSize}/>, document.getElementById("root"));
 
 function calculateWinner(squares) {
   /*
@@ -173,4 +173,16 @@ function calculateWinner(squares) {
   }
   */
   return null;
+}
+
+function validMove(squares,row,column){
+  for(let i = 0; i < squares.length; i++){
+    if(i!=row){
+      if(Math.abs(squares[i])==column || (Math.abs(squares[i])==column+(i-row) && column+(i-row) != 0) || (Math.abs(squares[i])==column+(i-row) && column+(i-row) != 0)) {
+        console.log("invalid move");
+        return false;
+      }
+    }
+  }
+  return true;
 }
