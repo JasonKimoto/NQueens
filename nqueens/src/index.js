@@ -115,7 +115,12 @@ function calculateWinner(squares) {
 function validMove(squares,row,column){
   for(let i = 0; i < squares.length; i++){
     if(i!=row){
-      if(Math.abs(squares[i])==column || (Math.abs(squares[i])==column+(i-row) && column+(i-row) != 0) || (Math.abs(squares[i])==column+(i-row) && column+(i-row) != 0)) {
+      if(Math.abs(squares[i])==column ||
+        (Math.abs(squares[i])==column+(i-row) && column+(i-row) != 0) ||
+        (Math.abs(squares[i])==column+(i-row) && column+(i-row) != 0) ||
+        (Math.abs(squares[i])==column-(i-row) && column-(i-row) != 0) ||
+        (Math.abs(squares[i])==column-(i-row) && column-(i-row) != 0)
+        ) {
         console.log("invalid move");
         return false;
       }
