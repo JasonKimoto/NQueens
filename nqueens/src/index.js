@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import Header from './components/Header.js'
 import Board from './components/Board.js'
+
 
 class Game extends React.Component {
   constructor(props) {
@@ -19,7 +21,7 @@ class Game extends React.Component {
 
   handleClick(i) {
     const row = Math.ceil(i/this.props.size)-1;
-    const colm = i%this.props.size==0 ? this.props.size : i%this.props.size;
+    const colm = i%this.props.size===0 ? this.props.size : i%this.props.size;
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
@@ -69,17 +71,20 @@ class Game extends React.Component {
     }
 
     return (
-      <div className="game">
-        <div className="game-board">
-          <Board
-            squares={current.squares}
-            onClick={i => this.handleClick(i)}
-            size={this.props.size}
-          />
+      <div className="container">
+        <div className="header">
+          <Header/>
         </div>
-        <div className="game-info">
-          <div>{status}</div>
-          <ol>{moves}</ol>
+        <div className="game">
+            <Board
+              squares={current.squares}
+              onClick={i => this.handleClick(i)}
+              size={this.props.size}
+            />
+          <div className="game-info">
+            <div>{status}</div>
+            <ol>{moves}</ol>
+          </div>
         </div>
       </div>
     );
@@ -87,7 +92,7 @@ class Game extends React.Component {
 }
 
 // ========================================
-const boardSize = 5
+const boardSize = 8
 ReactDOM.render(<Game size={boardSize}/>, document.getElementById("root"));
 
 function calculateWinner(squares) {
@@ -114,12 +119,12 @@ function calculateWinner(squares) {
 
 function validMove(squares,row,column){
   for(let i = 0; i < squares.length; i++){
-    if(i!=row){
-      if(Math.abs(squares[i])==column ||
-        (Math.abs(squares[i])==column+(i-row) && column+(i-row) != 0) ||
-        (Math.abs(squares[i])==column+(i-row) && column+(i-row) != 0) ||
-        (Math.abs(squares[i])==column-(i-row) && column-(i-row) != 0) ||
-        (Math.abs(squares[i])==column-(i-row) && column-(i-row) != 0)
+    if(i!==row){
+      if(Math.abs(squares[i])===column ||
+        (Math.abs(squares[i])===column+(i-row) && column+(i-row) !== 0) ||
+        (Math.abs(squares[i])===column+(i-row) && column+(i-row) !== 0) ||
+        (Math.abs(squares[i])===column-(i-row) && column-(i-row) !== 0) ||
+        (Math.abs(squares[i])===column-(i-row) && column-(i-row) !== 0)
         ) {
         console.log("invalid move");
         return false;

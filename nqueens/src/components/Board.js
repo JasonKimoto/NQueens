@@ -6,6 +6,7 @@ class Board extends React.Component {
   renderSquare(i, val) {
     return (
       <Square
+        key={i}
         value={val}
         color={this.props.squares[Math.ceil(i/this.props.size)-1]}
         onClick={() => this.props.onClick(i)}
@@ -21,7 +22,7 @@ class Board extends React.Component {
       let children = []
       //Inner loop to create children
       for (let j = 1; j <= boardSize; j++) {
-        if (Math.abs(this.props.squares[i-1]) == j) {
+        if (Math.abs(this.props.squares[i-1]) === j) {
 
           children.push(this.renderSquare((j)+(i-1)*boardSize, true))
         }
@@ -30,15 +31,15 @@ class Board extends React.Component {
         }
       }
       //Create the parent and add the children
-      board.push(<div className="board-row">{children}</div>)
+      board.push(<div key={i} className="board-row">{children}</div>)
     }
     return board;
   }
   render() {
     return (
-      <div>
+      <main className="game-board">
         {this.boardCreate()}
-      </div>
+      </main>
     );
   }
 }
